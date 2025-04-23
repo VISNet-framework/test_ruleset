@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools>=61.0", "setuptools-scm[toml]>=6.2", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "my_awesome_project"
+authors = [
+    { name = "Testig", email = "" },
+]
+description = "set of functions for common deeplearning tasks."
+readme = "README.md"
+requires-python = ">=3.9"
+keywords = ["deeplearning", "AI", "images"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Development Status :: 3 - Alpha",
+]
+
+dependencies = [
+]
+
+dynamic = ["version"]
+
+[project.urls]
+GitHub = "https://github.com/VISNet-framework/my_awesome_project"
+
+[project.optional-dependencies]
+test = [
+    "pylint",
+    "pytest",
+    "pytest-cov",
+    "ruff",
+    "mypy",
+    "types-tqdm"
+]
+
+[tool.setuptools.packages]
+find = {}
+
+[tool.setuptools.dynamic]
+version = {attr = "my_awesome_project.__version__"}
+
+[tool.pylint.'MASTER']
+ignore-patterns="_version.py"
+
+[tool.pylint.'VARIABLES']
+max-line-length=100
+
+[tool.ruff]
+exclude = ["_version.py", "ui_files"]
+line-length = 100

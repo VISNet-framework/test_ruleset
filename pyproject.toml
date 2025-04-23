@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "my_awesome_project"
 authors = [
-    { name = "Testig", email = "" },
+    { name = "Testig", email = "fake@gmail.com" },
 ]
 description = "set of functions for common deeplearning tasks."
 readme = "README.md"

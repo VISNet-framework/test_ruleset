@@ -48,14 +48,9 @@ jobs:
       run: |
         pylint my_awesome_project
 
-
-    - name: Lint with PyLint
-      run: |
-        pylint mlutils
-
     - name: Check types with MyPy
       run: |
-          mypy mlutils
+          mypy my_awesome_project
 
     - name: Test with pytest
       run: |

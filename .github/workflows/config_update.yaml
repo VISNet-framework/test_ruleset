@@ -18,7 +18,7 @@ jobs:
 
       - name: Clone VISNet-framework/mlutils with token
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.MLUTILS_TOKEN }}
         run: |
           git clone https://x-access-token:${GITHUB_TOKEN}@github.com/VISNet-framework/mlutils.git
           cd mlutils

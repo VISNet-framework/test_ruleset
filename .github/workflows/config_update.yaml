@@ -22,7 +22,7 @@ jobs:
         run: |
           git clone https://x-access-token:${GITHUB_TOKEN}@github.com/VISNet-framework/mlutils.git
           cd mlutils
-          pip install .
+          pip install .[test]
 
       - name: Set up Python
         uses: actions/setup-python@v2

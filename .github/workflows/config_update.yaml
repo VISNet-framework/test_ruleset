@@ -36,7 +36,7 @@ jobs:
       - name: Run generate_example_yaml
         run: |
           cd mlutils
-          python -c "from tests.mlutils.test_config import generate_example_yaml; generate_example_yaml(config.MainConfig, 'example_config.yaml')"
+          python -c "from tests.mlutils.test_config import generate_example_yaml; from mlutils.config import MainConfig; generate_example_yaml(config.MainConfig, 'example_config.yaml')"
 
       - name: Upload example_config.yaml as artifact
         uses: actions/upload-artifact@v4

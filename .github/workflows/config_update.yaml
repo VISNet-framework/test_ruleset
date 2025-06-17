@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.DOCS_TOKEN }}
 
       - name: Clone VISNet-framework/mlutils with token
         env:

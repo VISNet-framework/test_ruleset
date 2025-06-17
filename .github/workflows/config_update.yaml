@@ -1,0 +1,43 @@
+name: Generate Example YAML
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  generate_yaml:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Clone VISNet-framework/mlutils
+        run: |
+          git clone https://github.com/VISNet-framework/mlutils.git
+          cd mlutils
+          pip install .
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install .
+
+      - name: Run generate_example_yaml
+        run: |
+          python -c "from mlutils.tests.mlutils.test_config import generate_example_yaml; generate_example_yaml(config.MainConfig, 'example_config.yaml')"
+
+      - name: Upload example_config.yaml as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: example_config
+          path: example_config.yaml

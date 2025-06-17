@@ -10,8 +10,8 @@ on:
 
 jobs:
   generate_yaml:
-  if: "!startsWith(github.event.head_commit.message, '[auto]')"
-  runs-on: ubuntu-latest
+    if: "!startsWith(github.event.head_commit.message, '[auto]')"
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository

@@ -1,0 +1,132 @@
+cfg_filename: config/sample_config.yaml
+config_version: 2.0
+name: Example configuration
+project_name: sample_project
+project_dir: ~/projects/xxxxxx
+run_modes:
+- download
+- split
+logger_level: INFO
+framework: Ultralitics
+operation: instance_segmentation
+data:
+  classes:
+  - rose
+  dataset_dir: ${project_dir}/${project_name}/datasets
+  experiment_dir: ${project_dir}/${project_name}/experiment
+  img_dir: ${data.dataset_dir}/images
+  ann_dir: ${data.dataset_dir}/anns/${data.ann_version}/annotations
+  ann_version: 0-insseg-sample
+download:
+  ann_platform: Darwin
+  darwin:
+    ann_version: ${data.ann_version}
+    dataset_name: ${project_name}
+    team_name: wur-agrofoodrobotics
+    only_annotations: false
+    include_darwin_folder_structure: false
+    overwrite: false
+split:
+  ann_version: ${data.ann_version}
+  img_dir: ${data.img_dir}
+  ann_dir: ${data.dataset_dir}/anns/${split.ann_version}/annotations
+  split:
+  - 0.8
+  - 0.1
+  - 0.1
+  seed: 42
+  include_empty: false
+  n_samples: all
+  single_class: false
+  csv_path: ${split.ann_dir}/splits.csv
+train:
+  ann_version: ${data.ann_version}
+  ann_dir: ${data.dataset_dir}/anns/${train.ann_version}/coco
+  model:
+  - yolov8n-seg
+  imgsz_hw:
+  - - 1280
+    - 1280
+  lr:
+  - 0.5
+  optimizer:
+  - auto
+  batch_size:
+  - 2
+  iterations:
+  - 20
+inference:
+  img_dir: ${data.img_dir}
+  search_pattern: '**/*.png'
+  random: 0
+  ignore_classes:
+  - rose
+  preannotator:
+    enabled: false
+    prompt: false
+    upload_image: false
+    upload_ann: false
+  data_saver:
+    enabled: false
+evaluate:
+  ann_version: ${data.ann_version}
+  img_dir: ${data.dataset_dir}/images
+  ann_dir: ${data.dataset_dir}/anns/${data.ann_version}/annotations
+  split_path: ${evaluate.ann_dir}/test.json
+  iou_thresholds:
+  - 0.1
+  - 0.5
+  - 0.9
+  score_thresholds:
+  - 0.1
+  - 0.5
+  - 0.9
+load_model:
+  inferencer: default
+  model_runtime: cuda
+  ann_version: ${data.ann_version}
+  model_weights: ${data.experiment_dir}/weights/best.pt
+  nms_threshold: 0.5
+  score_threshold: 0.4
+  imgsz_hw:
+  - 1280
+  - 1280
+tile:
+  enabled: false
+  ann_version: ${data.ann_version}
+  ann_dir: ${data.dataset_dir}/anns/${tile.ann_version}/annotations
+  tile_size: 900
+  padding: 180
+  complete_size:
+  - 4000
+  - 9000
+  iou_threshold: 0.5
+utils:
+  display:
+    colors:
+    - '#FFFFFF'
+    - '#000000'
+    - '#FF0000'
+    save_scale: 1.0
+    thickness: 2
+    show_boxes: true
+    show_contour: true
+    show_contour_alpha: 0
+    contour_alpha: 0.1
+    contour_style: simple
+    show_output_window: false
+    show_labels: true
+    label_level: 1
+    label_scale: 1.0
+    generate_annotation_images: false
+  tracking:
+    enabled: false
+    software: wandb
+    mlflow_url: http://localhost:11001
+  crop:
+    enabled: false
+    size: 640
+    transparent: true
+    style: fixed
+    square_crop: false
+    pad: 64

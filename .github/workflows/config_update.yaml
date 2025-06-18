@@ -39,7 +39,7 @@ jobs:
       - name: Run generate_example_yaml in the root directory
         run: |
           cd mlutils
-          python -c "from tests.mlutils.test_config import generate_example_yaml; from mlutils.config import MainConfig; generate_example_yaml(MainConfig, '../example_config.yaml')"
+          python -c "from tests.mlutils.test_config import generate_example_yaml; from mlutils.config import MainConfig; generate_example_yaml(MainConfig, '../example_config.yaml', to_disk_comments=True)"
       - name: Commit and push example_config.yaml
         env:
           GH_PUSH_TOKEN: ${{ secrets.DOCS_TOKEN }}

@@ -1,132 +1,132 @@
-cfg_filename: config/sample_config.yaml
-config_version: 2.0
-name: Example configuration
-project_name: sample_project
-project_dir: ~/projects/xxxxxx
-run_modes:
-- download
-- split
-logger_level: INFO
-framework: Ultralitics
-operation: instance_segmentation
+cfg_filename: config/sample_config.yaml  # Path to the configuration file.
+config_version: 2.0 # Version of the configuration schema.
+name: Example configuration # Name of the configuration.
+project_name: sample_project # Name of the project.
+project_dir: ~/projects/xxxxxx # Path to the project directory.
+run_modes: # List of run modes (download, split, train, evaluate, inference, tile).
+  - download
+  - split
+logger_level: INFO # Logging level (e.g., DEBUG, INFO).
+framework: Ultralitics # Framework to use (e.g., Detectron2, Ultralitics).
+operation: instance_segmentation # Type of operation (e.g., classification, segmentation).
 data:
-  classes:
-  - rose
-  dataset_dir: ${project_dir}/${project_name}/datasets
-  experiment_dir: ${project_dir}/${project_name}/experiment
-  img_dir: ${data.dataset_dir}/images
-  ann_dir: ${data.dataset_dir}/anns/${data.ann_version}/annotations
-  ann_version: 0-insseg-sample
+  classes:  # List of class names.
+    - rose
+  dataset_dir: ${project_dir}/${project_name}/datasets # .
+  experiment_dir: ${project_dir}/${project_name}/experiment # .
+  img_dir: ${data.dataset_dir}/images # .
+  ann_dir: ${data.dataset_dir}/anns/${data.ann_version}/annotations # .
+  ann_version: 0-insseg-sample # Version of the annotations.
 download:
-  ann_platform: Darwin
+  ann_platform: Darwin  # .
   darwin:
-    ann_version: ${data.ann_version}
-    dataset_name: ${project_name}
-    team_name: wur-agrofoodrobotics
-    only_annotations: false
-    include_darwin_folder_structure: false
-    overwrite: false
+    ann_version: ${data.ann_version}  # Version of the annotations.
+    dataset_name: ${project_name} # Name of the dataset.
+    team_name: wur-agrofoodrobotics # Name of the team.
+    only_annotations: false # True is only annotations.
+    include_darwin_folder_structure: false # True if the darwin folder structure should be included.
+    overwrite: false # if none, user will be asked for input.
 split:
-  ann_version: ${data.ann_version}
-  img_dir: ${data.img_dir}
-  ann_dir: ${data.dataset_dir}/anns/${split.ann_version}/annotations
-  split:
-  - 0.8
-  - 0.1
-  - 0.1
-  seed: 42
-  include_empty: false
-  n_samples: all
-  single_class: false
-  csv_path: ${split.ann_dir}/splits.csv
+  ann_version: ${data.ann_version}  # Version of the annotations.
+  img_dir: ${data.img_dir} # .
+  ann_dir: ${data.dataset_dir}/anns/${split.ann_version}/annotations # .
+  split: # List of split ratios.
+    - 0.8
+    - 0.1
+    - 0.1
+  seed: 42 # Random seed for splitting.
+  include_empty: false # .
+  n_samples: all # .
+  single_class: false # .
+  csv_path: ${split.ann_dir}/splits.csv # Path to the CSV file for splitting.
 train:
-  ann_version: ${data.ann_version}
-  ann_dir: ${data.dataset_dir}/anns/${train.ann_version}/coco
-  model:
-  - yolov8n-seg
-  imgsz_hw:
-  - - 1280
-    - 1280
-  lr:
-  - 0.5
-  optimizer:
-  - auto
-  batch_size:
-  - 2
-  iterations:
-  - 20
+  ann_version: ${data.ann_version}  # Version of the annotations.
+  ann_dir: ${data.dataset_dir}/anns/${train.ann_version}/coco # .
+  model: # List of model names.
+    - yolov8n-seg
+  imgsz_hw: # List of image sizes.
+    -   - 1280
+        - 1280
+  lr: # List of learning rates.
+    - 0.5
+  optimizer: # List of optimizers.
+    - auto
+  batch_size: # List of batch sizes.
+    - 2
+  iterations: # List of iterations.
+    - 20
 inference:
-  img_dir: ${data.img_dir}
-  search_pattern: '**/*.png'
-  random: 0
-  ignore_classes:
-  - rose
+  img_dir: ${data.img_dir}  # .
+  search_pattern: '**/*.png' # .
+  random: 0 # Random seed for inference.
+  ignore_classes: # List of classes to ignore.
+    - rose
   preannotator:
-    enabled: false
-    prompt: false
-    upload_image: false
-    upload_ann: false
+    enabled: false  # True if pre-annotator is enabled.
+    prompt: false # When True, prompt is shown.
+    upload_image: false # When True, image are uploaded.
+    upload_ann: false # when True, annotations are uploaded.
   data_saver:
-    enabled: false
+    enabled: false  # True if data saver is enabled.
 evaluate:
-  ann_version: ${data.ann_version}
-  img_dir: ${data.dataset_dir}/images
-  ann_dir: ${data.dataset_dir}/anns/${data.ann_version}/annotations
-  split_path: ${evaluate.ann_dir}/test.json
-  iou_thresholds:
-  - 0.1
-  - 0.5
-  - 0.9
-  score_thresholds:
-  - 0.1
-  - 0.5
-  - 0.9
+  ann_version: ${data.ann_version}  # Version of the annotations.
+  img_dir: ${data.dataset_dir}/images # .
+  ann_dir: ${data.dataset_dir}/anns/${data.ann_version}/annotations # .
+  split_path: ${evaluate.ann_dir}/test.json # .
+  iou_thresholds: # List of IoU thresholds.
+    - 0.1
+    - 0.5
+    - 0.9
+  score_thresholds: # List of score thresholds.
+    - 0.1
+    - 0.5
+    - 0.9
 load_model:
-  inferencer: default
-  model_runtime: cuda
-  ann_version: ${data.ann_version}
-  model_weights: ${data.experiment_dir}/weights/best.pt
-  nms_threshold: 0.5
-  score_threshold: 0.4
-  imgsz_hw:
-  - 1280
-  - 1280
+  inferencer: default  # Type of inferencer.
+  model_runtime: cuda # Runtime for the model.
+  ann_version: ${data.ann_version} # Version of the annotations.
+  model_weights: ${data.experiment_dir}/weights/best.pt # Path to the model weights.
+  nms_threshold: 0.5 # Non-Maximum Suppression threshold.
+  score_threshold: 0.4 # Score threshold for predictions.
+  imgsz_hw: # Image size for inference.
+    - 1280
+    - 1280
 tile:
-  enabled: false
-  ann_version: ${data.ann_version}
-  ann_dir: ${data.dataset_dir}/anns/${tile.ann_version}/annotations
-  tile_size: 900
-  padding: 180
-  complete_size:
-  - 4000
-  - 9000
-  iou_threshold: 0.5
+  enabled: false  # True if tiling is enabled.
+  ann_version: ${data.ann_version} # Version of the annotations.
+  ann_dir: ${data.dataset_dir}/anns/${tile.ann_version}/annotations # .
+  tile_size: 900 # Size of the tiles.
+  padding: 180 # Padding for the tiles.
+  complete_size: # Size of the complete image.
+    - 4000
+    - 9000
+  iou_threshold: 0.5 # IoU threshold for tiling.
 utils:
   display:
-    colors:
-    - '#FFFFFF'
-    - '#000000'
-    - '#FF0000'
-    save_scale: 1.0
-    thickness: 2
-    show_boxes: true
-    show_contour: true
-    show_contour_alpha: 0
-    contour_alpha: 0.1
-    contour_style: simple
-    show_output_window: false
-    show_labels: true
-    label_level: 1
-    label_scale: 1.0
-    generate_annotation_images: false
+    colors:  # List of colors for display.
+      - '#FFFFFF'
+      - '#000000'
+      - '#FF0000'
+    save_scale: 1.0 # Scale for saving images.
+    thickness: 2 # Thickness of the lines.
+    show_boxes: true # True if boxes should be shown.
+    show_contour: true # True if contours should be shown.
+    show_contour_alpha: 0 # Alpha value for contours.
+    contour_alpha: 0.1 # Alpha value for contours.
+    contour_style: simple # Style of the contours.
+    show_output_window: false # True if output window should be shown.
+    show_labels: true # True if labels should be shown.
+    label_level: 1 # Level of the labels.
+    label_scale: 1.0 # Scale for the labels.
+    generate_annotation_images: false # True if annotation images should be generated.
   tracking:
-    enabled: false
-    software: wandb
-    mlflow_url: http://localhost:11001
+    enabled: false  # True if tracking is enabled.
+    software: wandb # Name of the tracking software.
+    mlflow_url: http://localhost:11001 # URL for MLflow.
   crop:
-    enabled: false
-    size: 640
-    transparent: true
-    style: fixed
-    square_crop: false
-    pad: 64
+    enabled: false  # True if cropping is enabled.
+    size: 640 # Size of the crop.
+    transparent: true # True if transparent background is used.
+    style: fixed # Style of the crop.
+    square_crop: false # True if square crop is used.
+    pad: 64 # Padding for the crop.
